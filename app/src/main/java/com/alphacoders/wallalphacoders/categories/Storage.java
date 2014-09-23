@@ -40,7 +40,11 @@ public class Storage {
 
             for(int i=0; i<itemsList.length(); i++) {
                 JSONObject itemObject = itemsList.getJSONObject(i);
-                catList.add( new Category( itemObject.getInt("id"), itemObject.getString("name"), itemObject.getString("image") ) );
+                catList.add( new Category(
+                        itemObject.getInt("id"),
+                        itemObject.getString("name"),
+                        itemObject.getString("image")
+                ) );
             }
 
         } catch (JSONException ex) {
