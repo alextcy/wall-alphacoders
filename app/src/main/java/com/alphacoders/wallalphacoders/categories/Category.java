@@ -7,11 +7,13 @@ public class Category {
 
     private int id;
     private String name;
+    private String image;
 
-    public Category(int catId, String catName)
+    public Category(int catId, String catName, String catImage)
     {
-        id = catId;
-        name = catName;
+        id      = catId;
+        name    = catName;
+        image   = catImage;
     }
 
     public int getId() {
@@ -29,6 +31,11 @@ public class Category {
     /*public void setName(String name) {
         this.name = name;
     }*/
+
+    public String getImage()
+    {
+        return image;
+    }
 
 
 }

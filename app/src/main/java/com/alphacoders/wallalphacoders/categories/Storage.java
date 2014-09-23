@@ -1,6 +1,7 @@
 package com.alphacoders.wallalphacoders.categories;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,13 +16,21 @@ import java.util.ArrayList;
  */
 public class Storage {
 
+    private static Storage instance;
     private Context mAppContext;
 
     private String dataFilename = "categories.json";
-    private ArrayList<Category> catList;
+    private ArrayList<Category> catList = new ArrayList<Category>();
 
+    public static Storage getInstance(Context appContext)
+    {
+        if(instance == null) {
+            instance = new Storage(appContext.getApplicationContext());
+        }
+        return instance;
+    }
 
-    public Storage(Context appContext)
+    private Storage(Context appContext)
     {
         try {
             mAppContext = appContext;
@@ -31,8 +40,7 @@ public class Storage {
 
             for(int i=0; i<itemsList.length(); i++) {
                 JSONObject itemObject = itemsList.getJSONObject(i);
-
-                catList.add( new Category( itemObject.getInt("id"), itemObject.getString("name") ) );
+                catList.add( new Category( itemObject.getInt("id"), itemObject.getString("name"), itemObject.getString("image") ) );
             }
 
         } catch (JSONException ex) {

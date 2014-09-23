@@ -4,14 +4,12 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.app.ListFragment;
 import android.view.View;
-//import android.widget.ArrayAdapter;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.alphacoders.wallalphacoders.R;
 
 import java.util.ArrayList;
-//import com.alphacoders.wallalphacoders.categories.dummy.DummyContent;
+
 
 
 public class CategoryListFragment extends ListFragment {
@@ -30,25 +28,19 @@ public class CategoryListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         getActivity().setTitle(R.string.app_name);
 
+        //получаем список категорий из JSON файла
+        catList = Storage.getInstance(getActivity()).getCategories();
 
-        catList = new Storage(getActivity()).getCategories();
+        CategoryAdapter adapter = new CategoryAdapter(catList, getActivity());
+        setListAdapter(adapter);
     }
 
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-
-
     }
 
 
-    private class CategoryAdapter extends ArrayAdapter<Category> {
-
-        public CategoryAdapter(ArrayList<Category> catList)
-        {
-            super(getActivity(), 0, catList);
-        }
-    }
 
 }

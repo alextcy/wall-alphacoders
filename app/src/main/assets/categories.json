@@ -32,5 +32,5 @@
     {"id": 31, "name":"Vehicles", "image":"vehicles.jpg"},
     {"id": 32, "name":"Video Game", "image":"video-game.jpg"},
     {"id": 33, "name":"Women", "image":"women.jpg"},
-    {"id": 34, "name":"Weapons", "image":"weapons.jpg"},
+    {"id": 34, "name":"Weapons", "image":"weapons.jpg"}
 ]
