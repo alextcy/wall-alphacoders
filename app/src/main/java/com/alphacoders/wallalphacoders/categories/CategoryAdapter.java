@@ -2,6 +2,7 @@ package com.alphacoders.wallalphacoders.categories;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,16 +41,21 @@ public class CategoryAdapter extends ArrayAdapter<Category>
         TextView categoryNameView = (TextView) convertView.findViewById(R.id.category_name);
         categoryNameView.setText(cat.getName());
 
-        //картинку из drawable показать
         ImageView categoryImageView = (ImageView) convertView.findViewById(R.id.category_image);
-        //categoryImageView.setImageDrawable(R.drawable.);
 
-        //String uri = "@drawable/" + cat.getImage();
-        //String uri = cat.getImage();
-        String uri = "abstarct";
-        int imageResource = getContext().getResources().getIdentifier(uri, null, getContext().getPackageName());
-        Drawable res = getContext().getResources().getDrawable(imageResource);
-        categoryImageView.setImageDrawable(res);
+        //ресурсные картинки НЕ могут совпадать с зарезервироваными словами (abstract,if,else,class ... )
+        //имя картинки должно быть без расширения
+        String imageNameWithoutExt = cat.getImage().substring(0, cat.getImage().lastIndexOf("."));
+        //получаем идентификатор ресурса картинки по ее имени
+        int imageResource = getContext().getResources().getIdentifier(
+            imageNameWithoutExt, "drawable", getContext().getPackageName()
+        );
+
+        if(imageResource != 0) {
+            categoryImageView.setImageResource(imageResource);
+        } else {
+            categoryImageView.setImageResource(R.drawable.ic_launcher);
+        }
 
         return convertView;
     }
