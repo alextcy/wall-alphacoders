@@ -11,6 +11,8 @@ import android.widget.GridView;
 
 import com.alphacoders.wallalphacoders.R;
 
+import java.util.ArrayList;
+
 
 public class GalleryFragment extends Fragment
 {
@@ -18,6 +20,7 @@ public class GalleryFragment extends Fragment
     public static final String CAT_NAME_KEY	= "com.alphacoders.wallwallalpacoders.cat_name";
 
     GridView galleryGridView;
+    ArrayList<Photo> itemsPhoto;
 
     public static GalleryFragment newInstance(int catId, String catName)
     {
@@ -40,7 +43,10 @@ public class GalleryFragment extends Fragment
         super.onCreate(savedInstanceState);
         getActivity().setTitle(getArguments().getString(CAT_NAME_KEY));
 
+        //Control whether a fragment instance is retained across Activity re-creation (such as from a configuration change).
+        //setRetainInstance(true);
 
+        new FetchPhotoAsyncTask().execute();
     }
 
     @Override
