@@ -37,7 +37,6 @@ public class CategoryListFragment extends ListFragment
 
         //получаем список категорий из JSON файла
         catList = Storage.getInstance(getActivity()).getCategories();
-
         CategoryAdapter adapter = new CategoryAdapter(catList, getActivity());
         setListAdapter(adapter);
     }
