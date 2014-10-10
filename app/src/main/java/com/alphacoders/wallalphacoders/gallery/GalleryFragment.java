@@ -6,10 +6,12 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ImageView;
 
 import com.alphacoders.wallalphacoders.R;
 
@@ -24,6 +26,7 @@ public class GalleryFragment extends Fragment
     GridView galleryGridView;
     ArrayList<Photo> itemsPhoto = new ArrayList<Photo>();
     GalleryAdapter galleryAdapter;
+    ThumbnailDownloader<ImageView> thumbnailThread;
     int categoryId;
 
     public static GalleryFragment newInstance(int catId, String catName)
@@ -55,9 +58,12 @@ public class GalleryFragment extends Fragment
         //последующие вызовы нужно делать в onScroll-чегототам обработчик скролера (получать новые фотки)
         //подумать как пердавать номер страницы в Storage ?
 
-
-
         new FetchPhotoItemsAsyncTask().execute(1);
+
+        thumbnailThread = new ThumbnailDownloader<ImageView>();
+        thumbnailThread.start();
+        thumbnailThread.getLooper();
+        Log.i("GalleryFragment", "Background thread started");
     }
 
     @Override
@@ -83,7 +89,7 @@ public class GalleryFragment extends Fragment
         if(galleryAdapter != null) {
             galleryAdapter.notifyDataSetChanged();
         } else {
-            galleryAdapter = new GalleryAdapter(itemsPhoto, getActivity());
+            galleryAdapter = new GalleryAdapter(itemsPhoto, thumbnailThread, getActivity());
             galleryGridView.setAdapter(galleryAdapter);
         }
 
@@ -96,6 +102,14 @@ public class GalleryFragment extends Fragment
         }*/
     }
 
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        thumbnailThread.quit();
+        Log.i("GalleryFragment", "Background thread destroyed");
+    }
 
     private class FetchPhotoItemsAsyncTask extends AsyncTask<Integer, Void, ArrayList<Photo>>
     {

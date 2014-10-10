@@ -18,9 +18,12 @@ import java.util.ArrayList;
  */
 public class GalleryAdapter extends ArrayAdapter<Photo>
 {
-    public GalleryAdapter(ArrayList<Photo> itemsList, Context appContext)
+    ThumbnailDownloader<ImageView> thumbnailThread;
+
+    public GalleryAdapter(ArrayList<Photo> itemsList, ThumbnailDownloader<ImageView> thumbThread, Context appContext)
     {
         super(appContext, 0, itemsList);
+        this.thumbnailThread = thumbThread;
     }
 
     @Override
@@ -33,13 +36,15 @@ public class GalleryAdapter extends ArrayAdapter<Photo>
 
         Photo photo = getItem(position);
 
-        //ImageView photoImageView = (ImageView) convertView.findViewById(R.id.gallery_photo_item);
-        //photoImageView.setImageResource(R.drawable.ic_launcher);
-        //нужно реализовать функционал внедрения картинок в imageView
+        ImageView photoImageView = (ImageView) convertView.findViewById(R.id.photo_item);
+        photoImageView.setImageResource(R.drawable.wait_icon);
+
+        thumbnailThread.queueThumbnail(photoImageView, photo.getThumbUrl());
+
 
         //тестовый вывод ID картинок для проверки получения списка фоток
-        TextView photoTextView = (TextView)convertView.findViewById(R.id.gallery_photo_name);
-        photoTextView.setText(Integer.toString(photo.getId()));
+        //TextView photoTextView = (TextView)convertView.findViewById(R.id.gallery_photo_name);
+        //photoTextView.setText(Integer.toString(photo.getId()));
 
         return convertView;
     }
